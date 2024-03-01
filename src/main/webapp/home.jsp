@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>ECOURSES - Online Courses HTML Template</title>
+        <title>COURSEVO - Online Courses HTML Template</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
@@ -37,7 +37,7 @@
             <div class="row align-items-center py-4 px-xl-5">
                 <div class="col-lg-3">
                     <a href="" class="text-decoration-none">
-                        <h1 class="m-0"><span class="text-primary">E</span>COURSES</h1>
+                        <h1 class="m-0"><span class="text-primary">C</span>OURSEVO</h1>
                     </a>
                 </div>
                 <div class="col-lg-3 text-right">
