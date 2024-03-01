@@ -18,18 +18,10 @@ CREATE TABLE "userCourse"(
     "courseID" BIGINT NOT NULL,
     "uid" BIGINT NOT NULL
 );
-ALTER TABLE
-    "userCourse" ADD CONSTRAINT "usercourse_courseid_primary" PRIMARY KEY("courseID");
-ALTER TABLE
-    "userCourse" ADD CONSTRAINT "usercourse_uid_primary" PRIMARY KEY("uid");
 CREATE TABLE "couseCategory"(
     "categoryId" BIGINT NOT NULL,
     "courseId" BIGINT NOT NULL
 );
-ALTER TABLE
-    "couseCategory" ADD CONSTRAINT "cousecategory_categoryid_primary" PRIMARY KEY("categoryId");
-ALTER TABLE
-    "couseCategory" ADD CONSTRAINT "cousecategory_courseid_primary" PRIMARY KEY("courseId");
 CREATE TABLE "user"(
     "uid" BIGINT NOT NULL,
     "accountID" BIGINT NOT NULL,
@@ -71,7 +63,7 @@ ALTER TABLE
 ALTER TABLE
     "review" ADD CONSTRAINT "review_id_foreign" FOREIGN KEY("id") REFERENCES "course"("id");
 ALTER TABLE
-    "course" ADD CONSTRAINT "course_id_foreign" FOREIGN KEY("id") REFERENCES "couseCategory"("courseId");
+    "couseCategory" ADD CONSTRAINT "cousecategory_courseid_foreign" FOREIGN KEY("courseId") REFERENCES "course"("id");
 ALTER TABLE
     "video" ADD CONSTRAINT "video_courseid_foreign" FOREIGN KEY("courseID") REFERENCES "course"("id");
 ALTER TABLE
