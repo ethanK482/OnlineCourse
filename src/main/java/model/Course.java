@@ -8,7 +8,7 @@ package model;
 public class Course {
     private int id, sellerId;
     private String title, description;
-
+    
     public Course(int id, int sellerId, String title, String description) {
         this.id = id;
         this.sellerId = sellerId;
