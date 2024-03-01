@@ -18,6 +18,18 @@ CREATE TABLE "userCourse"(
     "courseID" BIGINT NOT NULL,
     "uid" BIGINT NOT NULL
 );
+ALTER TABLE
+    "userCourse" ADD CONSTRAINT "usercourse_courseid_primary" PRIMARY KEY("courseID");
+ALTER TABLE
+    "userCourse" ADD CONSTRAINT "usercourse_uid_primary" PRIMARY KEY("uid");
+CREATE TABLE "couseCategory"(
+    "categoryId" BIGINT NOT NULL,
+    "courseId" BIGINT NOT NULL
+);
+ALTER TABLE
+    "couseCategory" ADD CONSTRAINT "cousecategory_categoryid_primary" PRIMARY KEY("categoryId");
+ALTER TABLE
+    "couseCategory" ADD CONSTRAINT "cousecategory_courseid_primary" PRIMARY KEY("courseId");
 CREATE TABLE "user"(
     "uid" BIGINT NOT NULL,
     "accountID" BIGINT NOT NULL,
@@ -28,6 +40,12 @@ CREATE TABLE "user"(
 );
 ALTER TABLE
     "user" ADD CONSTRAINT "user_uid_primary" PRIMARY KEY("uid");
+CREATE TABLE "category"(
+    "id" BIGINT NOT NULL,
+    "name" VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    "category" ADD CONSTRAINT "category_id_primary" PRIMARY KEY("id");
 CREATE TABLE "course"(
     "id" BIGINT NOT NULL,
     "uid" BIGINT NOT NULL,
@@ -41,16 +59,19 @@ CREATE TABLE "video"(
     "courseID" BIGINT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" VARCHAR(max) NOT NULL
-    "url" VARCHAR(max) NOT NULL
 );
 ALTER TABLE
     "video" ADD CONSTRAINT "video_id_primary" PRIMARY KEY("id");
 ALTER TABLE
     "user" ADD CONSTRAINT "user_accountid_foreign" FOREIGN KEY("accountID") REFERENCES "account"("id");
 ALTER TABLE
+    "couseCategory" ADD CONSTRAINT "cousecategory_categoryid_foreign" FOREIGN KEY("categoryId") REFERENCES "category"("id");
+ALTER TABLE
     "userCourse" ADD CONSTRAINT "usercourse_courseid_foreign" FOREIGN KEY("courseID") REFERENCES "course"("id");
 ALTER TABLE
     "review" ADD CONSTRAINT "review_id_foreign" FOREIGN KEY("id") REFERENCES "course"("id");
+ALTER TABLE
+    "course" ADD CONSTRAINT "course_id_foreign" FOREIGN KEY("id") REFERENCES "couseCategory"("courseId");
 ALTER TABLE
     "video" ADD CONSTRAINT "video_courseid_foreign" FOREIGN KEY("courseID") REFERENCES "course"("id");
 ALTER TABLE
