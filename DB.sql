@@ -1,5 +1,5 @@
 CREATE TABLE "account"(
-    "id" BIGINT NOT NULL,
+    "id" BIGINT IDENTITY(1,1) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "isVerifyEmail" TINYINT default 0
@@ -7,7 +7,7 @@ CREATE TABLE "account"(
 ALTER TABLE
     "account" ADD CONSTRAINT "account_id_primary" PRIMARY KEY("id");
 CREATE TABLE "review"(
-    "id" BIGINT NOT NULL,
+    "id" IDENTITY(1,1) BIGINT NOT NULL,
     "courseId" BIGINT NOT NULL,
     "content" VARCHAR(max) NOT NULL,
     "rate" INT NOT NULL
@@ -23,7 +23,7 @@ CREATE TABLE "couseCategory"(
     "courseId" BIGINT NOT NULL
 );
 CREATE TABLE "user"(
-    "uid" BIGINT NOT NULL,
+    "uid" IDENTITY(1,1) BIGINT NOT NULL,
     "accountID" BIGINT NOT NULL,
     "firstName" VARCHAR(255) NOT NULL,
     "lastName" VARCHAR(255) NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE "user"(
 ALTER TABLE
     "user" ADD CONSTRAINT "user_uid_primary" PRIMARY KEY("uid");
 CREATE TABLE "category"(
-    "id" BIGINT NOT NULL,
+    "id" IDENTITY(1,1) BIGINT NOT NULL,
     "name" VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     "category" ADD CONSTRAINT "category_id_primary" PRIMARY KEY("id");
 CREATE TABLE "course"(
-    "id" BIGINT NOT NULL,
+    "id" BIGINT IDENTITY(1,1) NOT NULL,
     "uid" BIGINT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" VARCHAR(max) NOT NULL
@@ -47,7 +47,7 @@ CREATE TABLE "course"(
 ALTER TABLE
     "course" ADD CONSTRAINT "course_id_primary" PRIMARY KEY("id");
 CREATE TABLE "video"(
-    "id" BIGINT NOT NULL,
+    "id" BIGINT IDENTITY(1,1) NOT NULL,
     "courseID" BIGINT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" VARCHAR(max) NOT NULL
