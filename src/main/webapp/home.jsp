@@ -122,6 +122,7 @@
                             <div class="d-flex "> 
                                 <a class="btn btn-primary py-2 px-4  d-none d-lg-block" href="login.jsp">Login</a>
                                 <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="register.jsp">Register</a>
+                                <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart.jsp">Cart (1)</a>
                             </div>
 
                         </div>
