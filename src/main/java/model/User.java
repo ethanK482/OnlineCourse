@@ -10,7 +10,16 @@ public class User {
     private String firstName, lastName;
     private double balance;
     private String role;
-
+    
+    public User(int uId) {
+        this.uId = uId;
+        this.accountId = 0;
+        this.firstName = null;
+        this.lastName = null;
+        this.balance = 0;
+        this.role = null;
+    }
+    
     public User(int uId, int accountId, String firstName, String lastName, double balance, String role) {
         this.uId = uId;
         this.accountId = accountId;

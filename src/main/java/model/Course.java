@@ -5,23 +5,41 @@
 
 package model;
 
+import java.util.ArrayList;
+
 public class Course {
-    private int id, sellerId;
+    private int id;
+    private User seller;
     private String title, description;
+    private ArrayList<Category> categories = new ArrayList<>();
     
-    public Course(int id, int sellerId, String title, String description) {
+    public Course(int id, User seller, String title, String description) {
         this.id = id;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.title = title;
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public void setCategories(ArrayList<Category> categories) {
+        this.categories = categories;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+    
+    
+
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -34,10 +52,6 @@ public class Course {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
     }
 
     public void setTitle(String title) {
