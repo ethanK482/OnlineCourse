@@ -11,11 +11,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import model.Category;
 import model.Course;
+import model.User;
 import util.ConnectDB;
 
 public class CourseService {
     
-    public static ArrayList<Course> getCourse() {
+    public static ArrayList<Course> fetchCourses() {
         String sql = "select * from course";
         ArrayList<Course> courses = new ArrayList<>();
         
@@ -28,7 +29,7 @@ public class CourseService {
             while (result.next()) {
                 courses.add(new Course(
                         Integer.parseInt(result.getString(1)),
-                        Integer.parseInt(result.getString(2)),
+                        new User(Integer.parseInt(result.getString(2))),
                         result.getString(3),
                         result.getString(4)
                 ));
@@ -36,12 +37,17 @@ public class CourseService {
             
             stmt.close();
             database.close();
+            
+            for (int i = 0; i < courses.size(); ++i) {
+                Course course = courses.get(i);
+                course.setCategories(fetchCategory(Integer.toString(course.getId())));
+            }
         } catch (Exception e) { System.err.println(e); }
         
         return courses;
     }
     
-    public static ArrayList<Category> getCategory(String courseId) {
+    public static ArrayList<Category> fetchCategory(String courseId) {
         String sql = "select * from courseCategory join category on courseCategory.categoryId = category.id where courseId = " + courseId;
         ArrayList<Category> categories = new ArrayList<>();
         
@@ -67,8 +73,8 @@ public class CourseService {
     
     public static void main(String[] args) {
         try {
-            ArrayList<Category> categories = getCategory("2");
-            for (int i = 0; i < categories.size(); ++i) System.out.println(categories.get(i).getName());
+            ArrayList<Course> courses = fetchCourses();
+            for (int i = 0; i < courses.size(); ++i) System.out.println(courses.get(i).getSeller().getFirstName());
         } catch (Exception e) { System.out.println(e); }
     }
 }
