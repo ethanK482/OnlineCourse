@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class ConnectDB {
-   public Connection getConnection() {
-       String url = "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=test";
+   public static Connection getConnection() {
+        String url = "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=coursevo";
         String user = "sa";
         String password = "123";
         try {
