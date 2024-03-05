@@ -7,19 +7,19 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTProvider {
 
-    private final String JWT_SECRET = "lodaaaaaa";
-    private Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
-    public  String generateToken(String userID, String role) {
+    private static final String JWT_SECRET = "lodaaaaaa";
+    private static Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
+    public static String generateToken(int userID, String role) {
 
         String token = JWT.create()
                 .withIssuer("online_course")
-                .withSubject(userID)
+                .withSubject(userID + "")
                 .withClaim("role", role)
                 .sign(algorithm);
         return token;
     }
 
-    public boolean validateToken(String authToken) {
+    public static boolean validateToken(String authToken) {
         try {
             DecodedJWT jwt = JWT.require(algorithm)
                     .withIssuer("online_course") // Make sure issuer matches
@@ -35,8 +35,7 @@ public class JWTProvider {
         return true;
     }
     public static void main(String[] args) {
-        JWTProvider jwt = new JWTProvider();
-        System.out.println(jwt.generateToken("123", "admin"));
-       jwt.validateToken(jwt.generateToken("123", "admin"));
+        System.out.println(JWTProvider.generateToken(1, "admin"));
+       JWTProvider.validateToken(JWTProvider.generateToken(1, "admin"));
     }   
 }
