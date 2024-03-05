@@ -8,13 +8,14 @@ package model;
 import java.util.ArrayList;
 
 public class Course {
-    private int id, sellerId;
+    private int id;
+    private User seller;
     private String title, description;
     private ArrayList<Category> categories = new ArrayList<>();
     
-    public Course(int id, int sellerId, String title, String description) {
+    public Course(int id, User seller, String title, String description) {
         this.id = id;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.title = title;
         this.description = description;
     }
@@ -23,12 +24,12 @@ public class Course {
         this.categories = categories;
     }
 
-    public int getSellerId() {
-        return sellerId;
+    public User getSeller() {
+        return seller;
     }
 
-    public void setSellerId(int sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
     
     
