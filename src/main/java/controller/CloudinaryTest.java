@@ -22,10 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.apache.http.HttpRequest;
 
-/**
- *
- * @author namto
- */
 @WebServlet(name = "CloudinaryTest", urlPatterns = {"/CloudinaryTest"})
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024 * 1, // 1 MB

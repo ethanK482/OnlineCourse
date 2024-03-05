@@ -48,6 +48,11 @@ public class Account {
     public void setIsVerifyEmail(boolean isVerifyEmail) {
         this.isVerifyEmail = isVerifyEmail;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", email=" + email + ", password=" + password + ", isVerifyEmail=" + isVerifyEmail + '}';
+    }
     
     
 }

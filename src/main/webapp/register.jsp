@@ -33,7 +33,7 @@
         <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="css/util.css">
         <link rel="stylesheet" type="text/css" href="css/main.css">
-         <link href="css/style.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
         <!--===============================================================================================-->
     </head>
     <body>
@@ -41,7 +41,7 @@
         <div class="limiter">
             <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
                 <div class="wrap-login100 p-l-110 p-r-110 p-t-30 p-b-33">
-                    <form class="login100-form validate-form flex-sb flex-w">
+                    <form method="post" action="register" class="login100-form validate-form flex-sb flex-w">
                         <span class="login100-form-title">
                             Sign Up
                         </span>
@@ -75,11 +75,11 @@
                         </div>
                         <div class="p-t-31 p-b-9">
                             <span class="txt1">
-                                Username
+                                Email
                             </span>
                         </div>
                         <div style="height: 50px" class="wrap-input100 validate-input" data-validate = "Username is required">
-                            <input class="input100" type="text" name="username" >
+                            <input type="email" class="input100" type="text" name="email" >
                             <span class="focus-input100"></span>
                         </div>
 
@@ -91,7 +91,9 @@
 
                         </div>
                         <div style="height: 50px" class="wrap-input100 validate-input" data-validate = "Password is required">
-                            <input class="input100" type="password" name="pass" >
+<!--                            <input class="input100" type="password" name="password" >-->
+                            
+                            <input  class="input100" type="password" id="password" name="password" pattern="^(?=.*[A-Z]).{8,}$" title="Password must contain at least one uppercase letter and be at least 8 characters long" required>
                             <span class="focus-input100"></span>
                         </div>
                         <div class="p-t-13 p-b-9">
@@ -102,7 +104,7 @@
 
                         </div>
                         <div style="height: 50px" class="wrap-input100 validate-input" data-validate = "Password is required">
-                            <input class="input100" type="password" name="comfirm_pass" >
+                            <input class="input100" type="password" name="confirm_password" >
                             <span class="focus-input100"></span>
                         </div>
 
@@ -117,7 +119,7 @@
                 </div>
             </div>
         </div>
- <%@include file="include/footer.jsp" %>
+        <%@include file="include/footer.jsp" %>
 
         <div id="dropDownSelect1"></div>
 
