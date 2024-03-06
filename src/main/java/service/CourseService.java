@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package service;
 
 import java.sql.Connection;
@@ -21,8 +16,7 @@ public class CourseService {
         ArrayList<Course> courses = new ArrayList<>();
         
         try {
-            Connection database = ConnectDB.getConnection();
-            
+            Connection database = ConnectDB.getConnection();   
             PreparedStatement stmt = database.prepareStatement(sql);
             ResultSet result = stmt.executeQuery();
             
@@ -31,7 +25,9 @@ public class CourseService {
                         Integer.parseInt(result.getString(1)),
                         new User(Integer.parseInt(result.getString(2))),
                         result.getString(3),
-                        result.getString(4)
+                        result.getString(4),
+                        result.getString(5),
+                        result.getDouble(6)
                 ));
             }
             
@@ -42,9 +38,40 @@ public class CourseService {
                 Course course = courses.get(i);
                 course.setCategories(fetchCategory(Integer.toString(course.getId())));
             }
-        } catch (Exception e) { System.err.println(e); }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         
         return courses;
+    }
+    
+        public static Course fetchCourseById(int id) {
+        String sql = "select * from course where id = ?";
+        
+        try {
+            Connection database = ConnectDB.getConnection();   
+            PreparedStatement stmt = database.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+            return new Course(
+                        Integer.parseInt(result.getString(1)),
+                        new User(Integer.parseInt(result.getString(2))),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getString(5),
+                        result.getDouble(6)
+                );
+            }
+            
+            stmt.close();
+            database.close();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        
+       return null;
     }
     
     public static ArrayList<Category> fetchCategory(String courseId) {
@@ -66,7 +93,9 @@ public class CourseService {
             
             stmt.close();
             database.close();
-        } catch (Exception e) { System.err.println(e); }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
         
         return categories;
     }
@@ -74,7 +103,14 @@ public class CourseService {
     public static void main(String[] args) {
         try {
             ArrayList<Course> courses = fetchCourses();
-            for (int i = 0; i < courses.size(); ++i) System.out.println(courses.get(i).getSeller().getFirstName());
-        } catch (Exception e) { System.out.println(e); }
+            for (int i = 0; i < courses.size(); ++i) {
+                System.out.println(courses.get(i).getPrice());
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+        System.out.println(fetchCourseById(1));
     }
 }

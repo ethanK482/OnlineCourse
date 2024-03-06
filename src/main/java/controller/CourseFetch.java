@@ -6,17 +6,18 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Course;
-import model.User;
 import service.CourseService;
+import util.CookieProvide;
 
 @WebServlet(name="CourseFetch", urlPatterns={"/course-fetch"})
 public class CourseFetch extends HttpServlet {
@@ -30,6 +31,14 @@ public class CourseFetch extends HttpServlet {
     throws ServletException, IOException {
         ArrayList<Course> courses = CourseService.fetchCourses();
         request.setAttribute("courses", courses);
+         Cookie[] cookies = request.getCookies();
+        StringBuilder cartString = CookieProvide.getCarts(cookies);
+        request.setAttribute("cartSize", 0);
+        if(!cartString.isEmpty()){
+            String[] cartArr = cartString.toString().split("-");     
+        request.setAttribute("cartSize", cartArr.length);
+        }
+        
         processRequest(request, response);
     } 
     
