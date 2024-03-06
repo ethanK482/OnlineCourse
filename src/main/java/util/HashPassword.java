@@ -4,7 +4,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class HashPassword {
-
     private static final String SALT = "salt";
 
     public static String getSecurePassword(String passwordToHash) {
