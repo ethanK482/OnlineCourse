@@ -10,7 +10,6 @@ import model.User;
 import util.ConnectDB;
 
 public class CourseService {
-    
     public static ArrayList<Course> fetchCourses() {
         String sql = "select * from course";
         ArrayList<Course> courses = new ArrayList<>();
@@ -22,12 +21,12 @@ public class CourseService {
             
             while (result.next()) {
                 courses.add(new Course(
-                        Integer.parseInt(result.getString(1)),
-                        new User(Integer.parseInt(result.getString(2))),
-                        result.getString(3),
-                        result.getString(4),
-                        result.getString(5),
-                        result.getDouble(6)
+                    Integer.parseInt(result.getString(1)),
+                    new User(Integer.parseInt(result.getString(2))),
+                    result.getString(3),
+                    result.getString(4),
+                    result.getString(5),
+                    result.getDouble(6)
                 ));
             }
             
