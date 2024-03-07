@@ -1,6 +1,4 @@
-
 package controller;
-
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -18,19 +16,32 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Order", urlPatterns = {"/Order"})
 public class Order extends HttpServlet {
 
-   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.getWriter().print(request.getParameter("action"));
+        switch (request.getParameter("action")) {
+            case "pay":
+                Pay(request, response);
+                break;
+            case "success":{
+                response.getWriter().print("success");
+                break;
+            }
+            default:
+                throw new AssertionError();
+        }
+    }
+
+    private void Pay(HttpServletRequest request, HttpServletResponse response) {
         try {
             Stripe.apiKey = "sk_test_51NhOiqFwiLeydcwjFiac5xebXeAJlL1ygtESPrNpTKU6TuyCHpdl34n4iOp3u99Guofm9JB2EEaZHL9qeVQ2UXaf00aB8IWj6f";
-            
-            SessionCreateParams params =
-                    SessionCreateParams.builder()
+
+            SessionCreateParams params
+                    = SessionCreateParams.builder()
                             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-                            .putMetadata("orderId", "1")
                             .setMode(SessionCreateParams.Mode.PAYMENT)
-                            .setSuccessUrl("https://yourdomain.com/success.html")
-                            .setCancelUrl("https://yourdomain.com/cancel.html")
+                            .setSuccessUrl("http://localhost:8080/OnlineCourse/Order?action=success")
+                            .setCancelUrl("http://yourdomain.com/cancel.jsp")
                             .addLineItem(
                                     SessionCreateParams.LineItem.builder()
                                             .setQuantity(1L)
@@ -48,10 +59,12 @@ public class Order extends HttpServlet {
                                             .build()
                             )
                             .build();
-            
+
             Session session = Session.create(params);
             response.sendRedirect(session.getUrl());
         } catch (StripeException ex) {
+            Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
