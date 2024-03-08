@@ -26,8 +26,10 @@ public class Login extends HttpServlet {
             Account account = (Account) userInfo.get(0);
             User user = (User) userInfo.get(1);
             if (account.isIsVerifyEmail()) {
-                Cookie cookie = new Cookie("auth_token", JWTProvider.generateToken(user.getuId(), user.getRole()));
+                Cookie cookie = new Cookie("auth_token", JWTProvider.generateToken(account.getId(), user.getRole()));
                 response.addCookie(cookie);
+                response.sendRedirect("course-fetch");
+                return;
             }
             request.setAttribute("firstname", user.getFirstName());
             request.setAttribute("email", account.getEmail());           

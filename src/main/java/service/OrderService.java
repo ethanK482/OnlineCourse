@@ -9,7 +9,7 @@ import util.ConnectDB;
 
 public class OrderService {
 
-    private static Order createOrder(double totalPrice, int uid) {
+    public static Order createOrder(double totalPrice, int uid) {
         String createOrderQuery = "insert into [order]( totalPrice, orderTime, isPaid, uid)"
                 + "values(?, ?, ?, ?)"
                 + "select * from [order] where id=  SCOPE_IDENTITY()";
@@ -31,6 +31,35 @@ public class OrderService {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    
+     public static void createOrderItem (int courseId, int orderId) {
+        String createOrderItemQuery = "insert into [orderItem]( orderId, productId )"
+                + "values(?, ?)";
+        try {
+            c = ConnectDB.getConnection();
+            pre = c.prepareStatement(createOrderItemQuery);
+            pre.setInt(1, orderId);
+            pre.setInt(2,courseId );
+            pre.executeUpdate();
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
+      public static void updatePayStatus (int orderId) {
+        String updateOrderQuery = "update [order] set isPaid=1 where id= ? ";
+        try {
+            c = ConnectDB.getConnection();
+            pre = c.prepareStatement(updateOrderQuery);
+            pre.setInt(1, orderId);
+            pre.executeUpdate();
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args) {
         System.out.println(OrderService.createOrder(1000, 10));

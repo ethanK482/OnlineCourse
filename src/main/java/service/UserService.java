@@ -126,7 +126,26 @@ public class UserService {
         }
         return null;
     }
+    public static User getUserById(int uid) {
+        String getUserInfoQuery = "select * from [user] where uid = ? ";
+        try {
+            c = ConnectDB.getConnection();
+            pre = c.prepareStatement(getUserInfoQuery);
+            pre.setInt(1, uid);
+            rs = pre.executeQuery();
+            if (rs.next()) {
+                User user = new User(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rs.getString(6));
+                return user;
+            }
+            c.close();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+
+    }
     public static User getUserInfo(int accountID) {
         String getUserInfoQuery = "select * from [user] where accountID = ? ";
         try {
@@ -149,7 +168,7 @@ public class UserService {
     }
 
     public static void main(String[] args) {
-        System.out.println(register("huy@gmail.com", "123", "huy", "huynh"));
+        System.out.println(getUserInfo(15));
     }
 
 }
