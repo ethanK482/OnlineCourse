@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Course;
+import model.User;
 import service.CourseService;
+import service.UserService;
 import util.CookieProvide;
 
 /**
@@ -64,12 +66,19 @@ public class Cart extends HttpServlet {
         String cartString = CookieProvide.getCarts(cookies).toString();
         ArrayList cartItems = new ArrayList();
         String[] cartArr = cartString.split("-");
+        double totalPrice = 0;
         for (String courseId : cartArr) {
             Course course  =   CourseService.fetchCourseById(Integer.parseInt(courseId));
+            User seller = UserService.getUserById(course.getSeller().getuId());
+            course.getSeller().setFirstName(seller.getFirstName());
+            course.getSeller().setLastName(seller.getLastName());
             cartItems.add(course);
+            totalPrice+=course.getPrice();
         }
         request.setAttribute("courses", cartItems);
          request.setAttribute("quanlity", cartItems.size());
+         request.setAttribute("totalPrice", totalPrice);
+         
         try {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
         } catch (ServletException ex) {

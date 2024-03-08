@@ -30,8 +30,8 @@
                         <div class="row">
                                     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                                         <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Vertical/12a.webp"
-                                                 class="w-100" alt="Blue Jeans Jacket" />
+                                            <img src="${course.bannerUrl}"
+                                                 class="w-100" alt="Course" />
                                             <a href="#!">
                                                 <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                                             </a>
@@ -40,26 +40,17 @@
                                     </div>
 
                                     <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Data -->
-                                        <p><strong>Blue denim shirt</strong></p>
-                                        <p>Color: blue</p>
-                                        <p>Size: M</p>
+                                        <p><strong>${course.title}</strong></p>
+                                        <p>${course.seller.firstName} ${course.seller.lastName}</p>
                                         <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                                                 title="Remove item">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                      
-                                        <!-- Data -->
                                     </div>
 
                                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                                        <!-- Quantity -->
-                                      
-                                        <!-- Quantity -->
-
-                                        <!-- Price -->
                                         <p class="text-start text-md-center">
-                                            <strong>$17.99</strong>
+                                            <strong>${course.price}$</strong>
                                         </p>
                                         <!-- Price -->
                                     </div>
@@ -98,12 +89,8 @@
                                 <ul class="list-group list-group-flush">
                                     <li
                                         class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                                        Products
-                                        <span>$53.98</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                        Shipping
-                                        <span>Gratis</span>
+                                        Courses
+                                        <span>${totalPrice}$</span>
                                     </li>
                                     <li
                                         class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -113,13 +100,17 @@
                                                 <p class="mb-0">(including VAT)</p>
                                             </strong>
                                         </div>
-                                        <span><strong>$53.98</strong></span>
+                                        <span><strong>${totalPrice}$</strong></span>
                                     </li>
                                 </ul>
-
-                                <button type="button" class="btn btn-primary btn-lg btn-block">
-                                    Go to checkout
-                                </button>
+                                    
+                                    <form action="Order?action=pay" method="post">
+                                        <input value="${totalPrice}" name="totalPrice" type="hidden"/>
+                                         <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                             Go to checkout</button>
+                                    </form>
+                                   
+                                </a>
                             </div>
                         </div>
                     </div>

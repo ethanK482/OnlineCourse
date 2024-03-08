@@ -120,8 +120,16 @@
                                 <a href="contact.html" class="nav-item nav-link">Contact</a>
                             </div>
                             <div class="d-flex "> 
-                                <a class="btn btn-primary py-2 px-4  d-none d-lg-block" href="login.jsp">Login</a>
-                                <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="register.jsp">Register</a>
+                                <c:if test="${user==null}">
+                                    <a class="btn btn-primary py-2 px-4  d-none d-lg-block" href="login.jsp">Login</a>
+                                    <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="register.jsp">Register</a>
+                                </c:if>
+                                 <c:if test="${user!=null}">
+                                    <span class="btn btn-primary py-2 px-4  d-none d-lg-block">${user.firstName} ${user.lastName}</span>
+                                    
+                                </c:if>
+
+
                                 <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart?action=view-cart">Cart (${cartSize})</a>
                             </div>
 
@@ -149,9 +157,9 @@
                                 <div 
                                     class="bg-secondary p-4"
                                     style="
-                                        border-radius: 10px;
+                                    border-radius: 10px;
                                     "
-                                >
+                                    >
                                     <img 
                                         src="${course.getBannerUrl()}"
                                         style="
@@ -174,7 +182,7 @@
                                             </h6>
                                             <!--<h5 class="m-0">$99</h5>-->
                                         </div>
-                                          <a class="btn btn-outline-dark mt-auto" href="cart?action=add-to-cart&id=${course.id}">Add to cart</a>
+                                        <a class="btn btn-outline-dark mt-auto" href="cart?action=add-to-cart&id=${course.id}">Add to cart</a>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +202,7 @@
 
 
 
-   <%@include file="include/footer.jsp" %>
+        <%@include file="include/footer.jsp" %>
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>

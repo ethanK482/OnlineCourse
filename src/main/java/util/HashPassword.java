@@ -1,9 +1,12 @@
 package util;
 
+import java.nio.Buffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class HashPassword {
+
     private static final String SALT = "salt";
 
     public static String getSecurePassword(String passwordToHash) {
@@ -32,8 +35,12 @@ public class HashPassword {
     }
 
     public static void main(String[] args) {
-        String password = "password123";
-        String hashedPassword = getSecurePassword(password);
-        System.out.println(hashedPassword);
+        String originalInput = "1";
+        String encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes());
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        String decodedString = new String(decodedBytes);
+
+        System.out.println(encodedString + " " + decodedString);
+
     }
 }
