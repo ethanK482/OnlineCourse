@@ -13,9 +13,9 @@
 	
 	<!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:800|Roboto:400,500,700&display=swap" rel="stylesheet">
-	
-	<!-- FontAwesome JS-->
-	<script defer src="assets/fontawesome/js/all.min.js"></script>
+        
+        <!-- Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
 	<!-- Theme CSS -->  
 	<link id="theme-style" rel="stylesheet" href="css/theme.css">
