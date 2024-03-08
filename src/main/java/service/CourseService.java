@@ -44,6 +44,35 @@ public class CourseService {
         return courses;
     }
     
+        public static Course fetchCourseById(int id) {
+        String sql = "select * from course where id = ?";
+        
+        try {
+            Connection database = ConnectDB.getConnection();   
+            PreparedStatement stmt = database.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+            return new Course(
+                        Integer.parseInt(result.getString(1)),
+                        new User(Integer.parseInt(result.getString(2))),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getString(5),
+                        result.getDouble(6)
+                );
+            }
+            
+            stmt.close();
+            database.close();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        
+       return null;
+    }
+    
     public static ArrayList<Category> fetchCategory(String courseId) {
         String sql = "select * from courseCategory join category on courseCategory.categoryId = category.id where courseId = " + courseId;
         ArrayList<Category> categories = new ArrayList<>();
@@ -79,5 +108,8 @@ public class CourseService {
         } catch (Exception e) {
             System.out.println(e);
         }
+        
+        
+        System.out.println(fetchCourseById(1));
     }
 }

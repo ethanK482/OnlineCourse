@@ -33,7 +33,6 @@
     </head>
 
     <body>
-        <!-- Topbar Start -->
         <div class="container-fluid d-none d-lg-block">
             <div class="row align-items-center py-4 px-xl-5">
                 <div class="col-lg-3">
@@ -123,6 +122,7 @@
                             <div class="d-flex "> 
                                 <a class="btn btn-primary py-2 px-4  d-none d-lg-block" href="login.jsp">Login</a>
                                 <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="register.jsp">Register</a>
+                                <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart?action=view-cart">Cart (${cartSize})</a>
                             </div>
 
                         </div>
@@ -174,6 +174,7 @@
                                             </h6>
                                             <!--<h5 class="m-0">$99</h5>-->
                                         </div>
+                                          <a class="btn btn-outline-dark mt-auto" href="cart?action=add-to-cart&id=${course.id}">Add to cart</a>
                                     </div>
                                 </div>
                             </div>
