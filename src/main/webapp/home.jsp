@@ -161,20 +161,24 @@
                                     "
                                     >
                                     <img 
-                                        src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                                        src="${course.getBannerUrl()}"
                                         style="
-                                        width: 300px;
-                                        height: 200px;
-                                        object-fit: contain;
-                                        margin-bottom: 16px;
-                                        border-radius: 10px;
+                                            width: 300px;
+                                            height: 200px;
+                                            object-fit: cover;
+                                            margin-bottom: 16px;
+                                            border-radius: 10px;
                                         "
-                                        />
-                                    <a class="h5" href="">${course.getTitle()}</a>
+                                    />
+                                    <a class="h5" href="course-detail?courseId=${course.getId()}">${course.getTitle()}</a>
                                     <div class="border-top mt-4 pt-4">
                                         <div class="d-flex justify-content-between">
                                             <h6 class="m-0"><i class="fa fa-pen-nib"></i>
                                                 ${course.getSeller().getFirstName() + course.getSeller().getLastName()}
+                                            </h6>
+                                            <h6 class="m-0">
+                                                <span>$</span>
+                                                ${course.getPrice()}
                                             </h6>
                                             <!--<h5 class="m-0">$99</h5>-->
                                         </div>

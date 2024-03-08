@@ -44,7 +44,7 @@ public class Cart extends HttpServlet {
             String id = request.getParameter("id");
             Cookie[] cookies = request.getCookies();
             StringBuilder cartContentBuilder = CookieProvide.getCarts(cookies);
-            if (cartContentBuilder.isEmpty()) {
+            if (cartContentBuilder.length() > 0) {
                 cartContentBuilder.append(id);
             } else {
                 if (!cartContentBuilder.toString().contains(id)) {
