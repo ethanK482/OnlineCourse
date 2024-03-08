@@ -45,10 +45,11 @@ public class Cart extends HttpServlet {
             Cookie[] cookies = request.getCookies();
             StringBuilder cartContentBuilder = CookieProvide.getCarts(cookies);
             if (cartContentBuilder.length() > 0) {
-                cartContentBuilder.append(id);
+                cartContentBuilder.append("-").append(id);
             } else {
                 if (!cartContentBuilder.toString().contains(id)) {
-                    cartContentBuilder.append("-").append(id);
+                         cartContentBuilder.append(id);
+                  
                 }
             }
             String cartContent = cartContentBuilder.toString();
@@ -76,8 +77,8 @@ public class Cart extends HttpServlet {
             totalPrice+=course.getPrice();
         }
         request.setAttribute("courses", cartItems);
-         request.setAttribute("quanlity", cartItems.size());
-         request.setAttribute("totalPrice", totalPrice);
+        request.setAttribute("quanlity", cartItems.size());
+        request.setAttribute("totalPrice", totalPrice);
          
         try {
             request.getRequestDispatcher("cart.jsp").forward(request, response);

@@ -1,3 +1,4 @@
+<%@include file="include/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
@@ -14,11 +15,9 @@
 	<!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:800|Roboto:400,500,700&display=swap" rel="stylesheet">
 	
-	<!-- FontAwesome JS-->
-	<script defer src="assets/fontawesome/js/all.min.js"></script>
 
 	<!-- Theme CSS -->  
-	<link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+	<link id="theme-style" rel="stylesheet" href="css/theme.css">
 
 
 </head> 
@@ -218,10 +217,11 @@
             </div><!--//modal-content-->
         </div><!--//modal-dialog-->
     </div><!--//modal-->
-
+<%@include file="include/footer.jsp" %>
     <script src="assets/plugins/popper.min.js"></script>      
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
     <script src="assets/js/main.js"></script>
 </body>
+
 </html> 
 
