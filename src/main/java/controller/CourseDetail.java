@@ -13,6 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Course;
+import service.CourseService;
 
 @WebServlet(name="CourseDetail", urlPatterns={"/course-detail"})
 public class CourseDetail extends HttpServlet {
@@ -26,14 +28,15 @@ public class CourseDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher dispatch = request.getRequestDispatcher("home.jsp");
+        RequestDispatcher dispatch = request.getRequestDispatcher("course-detail.jsp");
         dispatch.forward(request, response);
     } 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String courseId = request.getParameter("courseId");
+        Course course = CourseService.fetchCourseById(Integer.parseInt(request.getParameter("courseId")));
+        request.setAttribute("course", course);
         processRequest(request, response);
     }
 

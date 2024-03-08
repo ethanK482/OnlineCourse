@@ -24,15 +24,24 @@
 </head> 
 
 <body>    
+    <%@include file="include/header.jsp" %>
     <header class="header">
-        <section class="hero-section" style="background-image: url(https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg)"
+        <section 
+            class="hero-section" 
+            style="
+                background-image: url(${course.getBannerUrl()})
+            "
         >
             <div class="hero-mask">
             </div><!--//hero-mask-->
             <div class="container text-center py-5">
                 <div class="single-col-max mx-auto">
                     <h1 class="hero-heading mb-5">
-                        <span class="brand mb-4 d-block"><span class="text-highlight pr-2">{</span><span class="name">DevCourse</span><span class="text-highlight pl-2">}</span></span>
+                        <span class="brand mb-4 d-block">
+                            <span class="text-highlight pr-2" style="color: #ff6600">{</span>
+                            <span class="name">${course.getTitle()}</span>
+                            <span class="text-highlight pl-2" style="color: #ff6600">}</span>
+                        </span>
                     </h1>
                     <div class="text-center mb-5">
                         <a href="#section-content" class="btn btn-primary btn-lg scrollto">Start Learning Now</a>
@@ -133,7 +142,9 @@
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="plan-item rounded">
                                 <div class="plan-header">
-                                    <h4 class="plan-heading rounded-top p-3  theme-bg-primary">Free</h4>
+                                    <h4 
+                                        class="plan-heading rounded-top p-3  theme-bg-primary"
+                                    >Free</h4>
                                 </div><!--//plan-header-->
 
                                 <div class="plan-details p-4">
@@ -218,6 +229,8 @@
             </div><!--//modal-content-->
         </div><!--//modal-dialog-->
     </div><!--//modal-->
+    
+    <%@include file="include/footer.jsp" %>
 
     <script src="assets/plugins/popper.min.js"></script>      
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
