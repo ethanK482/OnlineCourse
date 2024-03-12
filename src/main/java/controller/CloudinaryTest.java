@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import org.apache.http.HttpRequest;
 
 @WebServlet(name = "CloudinaryTest", urlPatterns = {"/CloudinaryTest"})
 @MultipartConfig(

@@ -41,7 +41,7 @@
 		<div class="container-login100" style="background-image: url('images/bg-01.jpg');">
 			<div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
                             <span>${notice!=null ? notice : ""}</span>
-                            <form method="post" action="login" class="login100-form validate-form flex-sb flex-w">
+                            <form method="post" action="auth?action=login" class="login100-form validate-form flex-sb flex-w">
 					<span class="login100-form-title p-b-53">
 						Sign In
 					</span>

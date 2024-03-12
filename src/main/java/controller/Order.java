@@ -6,7 +6,6 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,10 +56,10 @@ public class Order extends HttpServlet {
         int orderId = Integer.parseInt(decodeOrderId(request.getParameter("pay-code")));
         OrderService.updatePayStatus(orderId);
         Cookie cookie = new Cookie("cart", "");
+         cookie.setMaxAge(0);
         response.addCookie(cookie);
         try {
             response.sendRedirect("course-fetch");
-            return;
         } catch (IOException ex) {
             Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
         }
