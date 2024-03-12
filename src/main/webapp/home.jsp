@@ -128,6 +128,10 @@
                                     <span class="btn btn-primary py-2 px-4  d-none d-lg-block">${user.firstName} ${user.lastName}</span>
                                     
                                 </c:if>
+                                     <c:if test="${user!=null}">
+                                         <a href="auth?action=logout">Logout </a>
+                                    
+                                </c:if>
 
 
                                 <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart?action=view-cart">Cart (${cartSize})</a>

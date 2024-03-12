@@ -103,12 +103,17 @@
                                         <span><strong>${totalPrice}$</strong></span>
                                     </li>
                                 </ul>
-                                    
-                                    <form action="Order?action=pay" method="post">
+                                       <c:if test="${courses==null}">
+                                           <a href="course-fetch">Add to cart</a>
+                                </c:if>
+                                                  <c:if test="${courses!=null}">
+                                         <form action="Order?action=pay" method="post">
                                         <input value="${totalPrice}" name="totalPrice" type="hidden"/>
                                          <button type="submit" class="btn btn-primary btn-lg btn-block">
                                              Go to checkout</button>
                                     </form>
+                                </c:if>
+                                    
                                    
                                 </a>
                             </div>

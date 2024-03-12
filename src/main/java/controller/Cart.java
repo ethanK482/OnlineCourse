@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -65,7 +64,8 @@ public class Cart extends HttpServlet {
     private void viewCart(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String cartString = CookieProvide.getCarts(cookies).toString();
-        ArrayList cartItems = new ArrayList();
+        if(!cartString.equals("")){
+            ArrayList cartItems = new ArrayList();
         String[] cartArr = cartString.split("-");
         double totalPrice = 0;
         for (String courseId : cartArr) {
@@ -79,6 +79,8 @@ public class Cart extends HttpServlet {
         request.setAttribute("courses", cartItems);
         request.setAttribute("quanlity", cartItems.size());
         request.setAttribute("totalPrice", totalPrice);
+        }
+        
          
         try {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
