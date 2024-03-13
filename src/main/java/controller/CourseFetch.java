@@ -35,7 +35,7 @@ public class CourseFetch extends HttpServlet {
         Cookie[] cookies = request.getCookies();
         StringBuilder cartString = CookieProvide.getCarts(cookies);
         request.setAttribute("cartSize", 0);
-        if (!cartString.isEmpty()) {
+        if (cartString.length() > 0) {
             String[] cartArr = cartString.toString().split("-");
             request.setAttribute("cartSize", cartArr.length);
         }

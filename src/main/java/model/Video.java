@@ -7,13 +7,12 @@ package model;
 
 public class Video {
     private int id, courseId;
-    private String title, description, url;
+    private String title, url;
 
-    public Video(int id, int courseId, String title, String description, String url) {
+    public Video(int id, int courseId, String title, String url) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
-        this.description = description;
         this.url = url;
     }
 
@@ -27,10 +26,6 @@ public class Video {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getUrl() {
@@ -47,10 +42,6 @@ public class Video {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public void setUrl(String url) {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Category;
 import model.Course;
 import model.User;
+import model.Video;
 import util.ConnectDB;
 
 public class CourseService {
@@ -44,7 +45,35 @@ public class CourseService {
         return courses;
     }
     
-        public static Course fetchCourseById(int id) {
+    public static ArrayList<Video> fetchVideoByCourseId(String courseId) {
+        String sql = "select * from video where courseID = " + courseId;
+        
+        ArrayList<Video> videos = new ArrayList<>();
+        
+        try {
+            Connection database = ConnectDB.getConnection();   
+            PreparedStatement stmt = database.prepareStatement(sql);
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+                videos.add(new Video(
+                        result.getInt(1),
+                        result.getInt(2),
+                        result.getString(3),
+                        result.getString(4)
+                ));
+            }
+            
+            stmt.close();
+            database.close();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        
+        return videos;
+    }
+    
+    public static Course fetchCourseById(int id) {
         String sql = "select * from course where id = ?";
         
         try {

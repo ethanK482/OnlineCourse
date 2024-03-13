@@ -24,17 +24,23 @@
 
 <body>    
     <header class="header">
-        <section class="hero-section" style="background-image: url(https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg)"
+        <section class="hero-section" 
+            style="
+                background-image: url(${course.getBannerUrl()})
+            "
         >
             <div class="hero-mask">
             </div><!--//hero-mask-->
             <div class="container text-center py-5">
                 <div class="single-col-max mx-auto">
                     <h1 class="hero-heading mb-5">
-                        <span class="brand mb-4 d-block"><span class="text-highlight pr-2">{</span><span class="name">DevCourse</span><span class="text-highlight pl-2">}</span></span>
+                        <span class="brand mb-4 d-block">
+                            <span class="text-highlight pr-2" style="color: #ff6600">{</span>
+                            <span class="name">${course.getTitle()}</span>
+                            <span class="text-highlight pl-2" style="color: #ff6600">}</span></span>
                     </h1>
                     <div class="text-center mb-5">
-                        <a href="#section-content" class="btn btn-primary btn-lg scrollto">Start Learning Now</a>
+                        <a href="#section-content" class="btn btn-primary btn-lg scrollto" style="background-color: #ff6600">Start Learning Now</a>
                     </div>
                 </div><!--//single-col-max-->
             </div><!--//container-->
@@ -49,7 +55,7 @@
                         <h3 class="section-title mb-4">What Will You Learn</h3>
                         <p class="mb-4">Your course overview goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae posuere nibh, at posuere enim. Sed vulputate ante congue, euismod odio a, gravida neque. Maecenas volutpat risus dolor.</p>
                         <div class="text-center mb-5">
-                                <a class="btn btn-primary scrollto" href="#section-pricing">Join Course Now</a>
+                                <a class="btn btn-primary scrollto" href="#section-pricing" style="background-color: #ff6600">Join Course Now</a>
                         </div>
                         <div class="video-container">
                             <div class="ratio ratio-16x9">
@@ -76,18 +82,26 @@
 
                         <div id="module-1" class="module-content collapse show" aria-labelledby="module-heading-1" >
                             <div class="card-body p-0">
+                                
+                                
+                                
                                 <div class="module-sub-item p-3">
                                     <div class="row justify-content-between">
                                         <div class="col-9">
                                             <span class="theme-text-secondary me-2">1.1</span>
-                                            <a class="video-play-trigger" href="#" data-bs-toggle="modal" data-bs-target="#modal-video-2">
-                                                Module Intro Video
-                                            </a>
-                                            <span class="badge bg-primary ms-2">Preview</span>
-                                        </div>
+                                            <a 
+                                                class="video-play-trigger" 
+                                                href="#" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modal-video-2"
+                                            >Module Intro Video</a><span class="badge bg-primary ms-2">Preview</span></div>
                                         <div class="col-3 text-end extra-info">02:30</div>
                                     </div>
                                 </div><!--//module-sub-item-->
+                                
+                                
+                                
+                                
                                 <div class="module-sub-item p-3">
                                     <div class="row justify-content-between">
                                         <div class="col-9"><span class="theme-text-secondary me-2">1.2</span>Module Lorem Ipsum</div>
@@ -180,7 +194,7 @@
                                     </div><!--//plan-content-->
                                 </div><!--//plan-content-->
                                 <div class="plan-cta text-center px-4">
-                                    <a class="btn btn-primary btn-block" href="https://themes.3rdwavemedia.com/bootstrap-templates/product/devcourse-bootstrap-4-course-landing-page-template/" target="_blank">Enrol Now</a>
+                                    <a style="background-color: #ff6600" class="btn btn-primary btn-block" href="https://themes.3rdwavemedia.com/bootstrap-templates/product/devcourse-bootstrap-4-course-landing-page-template/" target="_blank">Enrol Now</a>
                                 </div>
                             </div><!--//plan-item-->
                         </div><!--//col-->
@@ -192,7 +206,7 @@
     
     
     <!-- Video Modal -->
-    <div class="modal modal-video" id="modal-video-1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-video" id="modal-video-1" tabindex="-" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
@@ -217,6 +231,20 @@
             </div><!--//modal-content-->
         </div><!--//modal-dialog-->
     </div><!--//modal-->
+    
+    <!-- Video Modal -->
+	<div class="modal modal-video" id="modal-video" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+				<div class="modal-body">
+					<div class="ratio ratio-16x9">
+	                    <iframe width="560" height="315" src="https://www.youtube.com/embed/qz0aGYrrlhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		            </div>
+				</div><!--//modal-body-->
+			</div><!--//modal-content-->
+		</div><!--//modal-dialog-->
+	</div><!--//modal-->
 <%@include file="include/footer.jsp" %>
     <script src="assets/plugins/popper.min.js"></script>      
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
