@@ -16,12 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Course;
 import model.User;
-import model.Video;
 import service.CourseService;
 import util.CookieProvide;
 
-@WebServlet(name="CourseDetail", urlPatterns={"/course-detail"})
-public class CourseDetail extends HttpServlet {
+@WebServlet(name="CourseFetchAdmin", urlPatterns={"/course-fetch-admin"})
+public class CourseFetchAdmin extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,27 +31,24 @@ public class CourseDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher dispatch = request.getRequestDispatcher("course-detail.jsp");
-        dispatch.forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("course-admin-list.jsp");
+        dispatcher.forward(request, response);
     } 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String courseId = request.getParameter("courseId");
         User user = CookieProvide.getUserInfo(request);
-        boolean access = false;
         
-        Course course = CourseService.fetchCourseById(Integer.parseInt(courseId));
-        ArrayList<Video> videos = CourseService.fetchVideoByCourseId(courseId);
-        if (user != null && CourseService.checkUserCourse(courseId, String.valueOf(user.getuId()))) access = true;
-        
-        request.setAttribute("videos", videos);
-        request.setAttribute("course", course);
-        request.setAttribute("access", access);
-
-        processRequest(request, response);
-    }
+        if (user == null || !user.getRole().equals("admin")) {
+            response.sendRedirect("about.jsp");
+        } else {
+            ArrayList<Course> courses = CourseService.fetchCourseByCreatorId(String.valueOf(user.getuId()));
+            request.setAttribute("courses", courses);
+            
+            processRequest(request, response);
+        }
+    } 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

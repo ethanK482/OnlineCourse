@@ -4,6 +4,8 @@
     Author     : HuyHK
 --%>
 
+<%@page import="model.Course"%>
+<%@page import="java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -81,18 +83,27 @@
                     </a>
                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 9;">
                         <div class="navbar-nav w-100">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-toggle="dropdown">Web Design <i class="fa fa-angle-down float-right mt-1"></i></a>
-                                <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                    <a href="" class="dropdown-item">HTML</a>
-                                    <a href="" class="dropdown-item">CSS</a>
-                                    <a href="" class="dropdown-item">jQuery</a>
-                                </div>
+                            <form
+                                action="course-fetch"
+                                style="margin: 12px"
+                            >
+                                <input name="courseTitle" placeholder="Enter course name..." style="width: 222px" />
+                                <input type="submit" value="Search" style="border: none; color: white; background-color: #FF6600; padding: 4px 8px; border-radius: 6px"/>
+                            </form>
+                            <div style="max-height: 131px; overflow-y: scroll"
+                            >
+                                <% 
+                                    String courseTitleParam = "";
+                                    if (request.getParameter("courseTitle") != null)
+                                    courseTitleParam = "courseTitle=" + request.getParameter("courseTitle");
+                                %>
+                                <c:forEach var="category" items="${categories}">
+                                    <a 
+                                        href="?<%=courseTitleParam%>&categoryId=${category.getId()}"
+                                        class="nav-item nav-link"
+                                    >${category.getName()}</a>
+                                </c:forEach>
                             </div>
-                            <a href="" class="nav-item nav-link">Apps Design</a>
-                            <a href="" class="nav-item nav-link">Marketing</a>
-                            <a href="" class="nav-item nav-link">Research</a>
-                            <a href="" class="nav-item nav-link">SEO</a>
                         </div>
                     </nav>
                 </div>
@@ -108,8 +119,17 @@
                             <div class="navbar-nav py-0">
                                 <a href="index.html" class="nav-item nav-link active">Home</a>
                                 <a href="about.jsp" class="nav-item nav-link">About</a>
-                                <a href="course.html" class="nav-item nav-link">Courses</a>
-                                <a href="teacher.html" class="nav-item nav-link">Teachers</a>
+                                <a href="course-fetch?myLearning=1"
+                                    class="nav-item nav-link"
+                                >My Learning</a>
+<!--                                <a 
+                                    href="${user.getRole().equal("admin") ? "course-fetch-admin" : ""}" 
+                                    class="nav-item nav-link"
+                                >Teaches</a>-->
+                                <a 
+                                    href="course-fetch-admin"
+                                    class="nav-item nav-link"
+                                >Teaches</a>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Blog</a>
                                     <div class="dropdown-menu rounded-0 m-0">
@@ -175,10 +195,17 @@
                                         "
                                     />
                                     <a class="h5" href="course-detail?courseId=${course.getId()}">${course.getTitle()}</a>
-                                    <div class="border-top mt-4 pt-4">
-                                        <div class="d-flex justify-content-between">
+                                    <br />
+                                    <c:if test="${course.getCategories().size() > 0}">
+                                        <span>${course.getCategories().get(0).getName()}</span>
+                                    </c:if>
+                                    <c:if test="${course.getCategories().size() > 1}">
+                                        <span>, ${course.getCategories().get(1).getName()}</span>
+                                    </c:if>
+                                    <div class="border-top pt-4">
+                                        <div class="d-flex justify-content-between" style="margin-bottom: 12px">
                                             <h6 class="m-0"><i class="fa fa-pen-nib"></i>
-                                                ${course.getSeller().getFirstName() + course.getSeller().getLastName()}
+                                                ${course.getSeller().getFirstName()} ${course.getSeller().getLastName()}
                                             </h6>
                                             <h6 class="m-0">
                                                 <span>$</span>
@@ -197,15 +224,29 @@
         </div>
         <!-- Courses End -->
 
-
-
-
-
-
-
-
-
-
+        <div style="
+             display: flex;
+             justify-content: space-between;
+             margin-top: -120px;
+        ">
+            <a 
+                ${prevPage == null ? "" : prevPage}
+                style="
+                    display: block;
+                    margin: 40px;
+                    margin-left: 120px;
+                "
+            >Previous page</a>
+            <a 
+                ${nextPage == null ? "" : nextPage}
+                style="
+                    display: block;
+                    margin: 40px;
+                    margin-right: 120px;
+                "
+            >Next page</a>
+        </div>
+                
         <%@include file="include/footer.jsp" %>
 
         <!-- Back to Top -->

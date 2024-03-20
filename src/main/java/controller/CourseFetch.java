@@ -13,9 +13,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Category;
 import model.Course;
 import model.User;
 import service.CourseService;
+import service.UserService;
 import util.CookieProvide;
 
 @WebServlet(name = "CourseFetch", urlPatterns = {"/course-fetch"})
@@ -30,8 +32,56 @@ public class CourseFetch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<Course> courses = CourseService.fetchCourses();
-        request.setAttribute("courses", courses);
+        String pageParam = request.getParameter("page");
+        String myLearningParam = request.getParameter("myLearning");
+        String courseTitleParam = request.getParameter("courseTitle");
+        String categoryIdParam = request.getParameter("categoryId");
+        String nextPageParamUrl = "?";
+        String prevPageParamUrl = "?";
+        int page = 1;
+        String courseTitle = "";
+        String categoryId = "";
+        User user = CookieProvide.getUserInfo(request);
+        String userId = "";
+        
+        if (myLearningParam != null && user == null) {
+            response.sendRedirect("about.jsp");
+            return;
+        }
+        
+        if (user != null && myLearningParam != null) userId = String.valueOf(user.getuId());
+        
+        ArrayList<Category> categories = CourseService.fetchListCategory();
+        request.setAttribute("categories", categories);
+        
+//        if (userIdParam != null) userId = userIdParam;
+        
+        if (pageParam != null) page = Integer.parseInt(pageParam);
+        if (courseTitleParam != null) {
+            courseTitle = courseTitleParam;
+            nextPageParamUrl = nextPageParamUrl + "courseTitle=" + courseTitle +"";
+            prevPageParamUrl = prevPageParamUrl + "courseTitle=" + courseTitle +"";
+        }
+        
+        if (categoryIdParam != null) categoryId = categoryIdParam;
+        
+        ArrayList<Course> courses = CourseService.fetchCourses(courseTitle, categoryId, userId);
+        request.setAttribute("courses", courses.subList((page - 1) * 12, Math.min(page * 12, courses.size())));
+        
+        int maxPage = courses.size() / 12;
+        if (courses.size() % 12 > 0) ++maxPage;
+        
+        if (page > 1) {
+            if (prevPageParamUrl.length() > 1) prevPageParamUrl = prevPageParamUrl + "&";
+            prevPageParamUrl = prevPageParamUrl + "page=" + (page - 1);
+            request.setAttribute("prevPage", "href=\"" + prevPageParamUrl + "\"");
+        }
+        if (page < maxPage) {
+            if (nextPageParamUrl.length() > 1) nextPageParamUrl = nextPageParamUrl + "&";
+            nextPageParamUrl = nextPageParamUrl + "page=" + (page + 1);
+            request.setAttribute("nextPage", "href=\"" + nextPageParamUrl + "\"");
+        }
+        
         Cookie[] cookies = request.getCookies();
         StringBuilder cartString = CookieProvide.getCarts(cookies);
         request.setAttribute("cartSize", 0);
@@ -39,7 +89,6 @@ public class CourseFetch extends HttpServlet {
             String[] cartArr = cartString.toString().split("-");
             request.setAttribute("cartSize", cartArr.length);
         }
-        User user = CookieProvide.getUserInfo(request);
         request.setAttribute("user", user);
         processRequest(request, response);
     }

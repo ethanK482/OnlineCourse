@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="include/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en"> 
@@ -53,13 +54,18 @@
                 <div class="container py-5">
                     <div class="section-col-max mx-auto">
                         <h3 class="section-title mb-4">What Will You Learn</h3>
-                        <p class="mb-4">Your course overview goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae posuere nibh, at posuere enim. Sed vulputate ante congue, euismod odio a, gravida neque. Maecenas volutpat risus dolor.</p>
+                        <p class="mb-4">${course.getDescription()}</p>
                         <div class="text-center mb-5">
                                 <a class="btn btn-primary scrollto" href="#section-pricing" style="background-color: #ff6600">Join Course Now</a>
                         </div>
                         <div class="video-container">
                             <div class="ratio ratio-16x9">
-                            <iframe width="560" height="315" src="https://res.cloudinary.com/dzhndw8ro/video/upload/v1709279221/cgnoihxd3gorh3qdkmx2.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <c:if test="${videos.size() > 0}">
+                                    <iframe 
+                                        src="${videos.get(0).getUrl()}" 
+                                        width="560" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                                    ></iframe>
+                                </c:if>
                             </div>
                         </div><!--//video-container-->
 
@@ -70,62 +76,55 @@
             <div id="section-content" class="section-content section">
                 <h4 class="text-center mb-4">Course Materials</h4>
                 <div class="accordion module-accordion" id="module-accordion">
-                    <div class="module-item card">
+                    <div class="module-item card" style="width: 800px; margin: auto;">
                         <div class="module-header card-header" id="module-heading-1">
                             <h4 class="module-title mb-0">
                                 <a class="card-toggle module-toggle" href="#module-1" data-bs-toggle="collapse" data-bs-target="#module-1" aria-expanded="true" aria-controls="module-1">
                                     <i class="module-toggle-icon fas fa-minus me-2"></i>
-                                    Module 1 - Lorem Ipsum Dolor Sit Amet
+                                    ${course.getTitle()}
                                 </a>
                             </h4>
                         </div><!--//card-header-->
 
                         <div id="module-1" class="module-content collapse show" aria-labelledby="module-heading-1" >
                             <div class="card-body p-0">
-                                
-                                
-                                
-                                <div class="module-sub-item p-3">
-                                    <div class="row justify-content-between">
-                                        <div class="col-9">
-                                            <span class="theme-text-secondary me-2">1.1</span>
-                                            <a 
-                                                class="video-play-trigger" 
-                                                href="#" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#modal-video-2"
-                                            >Module Intro Video</a><span class="badge bg-primary ms-2">Preview</span></div>
-                                        <div class="col-3 text-end extra-info">02:30</div>
-                                    </div>
-                                </div><!--//module-sub-item-->
-                                
-                                
-                                
-                                
-                                <div class="module-sub-item p-3">
-                                    <div class="row justify-content-between">
-                                        <div class="col-9"><span class="theme-text-secondary me-2">1.2</span>Module Lorem Ipsum</div>
-                                        <div class="col-3 text-end extra-info">15:20</div>
-                                    </div>
-                                </div><!--//module-sub-item-->
-                                <div class="module-sub-item p-3">
-                                    <div class="row justify-content-between">
-                                        <div class="col-9"><span class="theme-text-secondary me-2">1.3</span>Module Suscipit Arcu</div>
-                                        <div class="col-3 text-end extra-info">23:15</div>
-                                    </div>
-                                </div><!--//module-sub-item-->
-                                <div class="module-sub-item p-3">
-                                    <div class="row justify-content-between">
-                                        <div class="col-9"><span class="theme-text-secondary me-2">1.4</span>Module Suspendisse Porttitor</div>
-                                        <div class="col-3 text-end extra-info">07:50</div>
-                                    </div>
-                                </div><!--//module-sub-item-->
-                                <div class="module-sub-item p-3">
-                                    <div class="row justify-content-between">
-                                        <div class="col-9"><span class="theme-text-secondary me-2">1.5</span>Module Related Resources</div>
-                                        <div class="col-3 text-end extra-info"><span class="icon dripicons-download me-2"></span>Resources</div>
-                                    </div>
-                                </div><!--//module-sub-item-->
+                                <c:if test="${videos.size() > 0}">
+                                    <c:forEach var="i" begin="0" end="${videos.size() - 1}">
+                                        <div class="module-sub-item p-3" style="border-bottom: 1px solid #efefef;">
+                                            <div class="row justify-content-between">
+                                                <div class="col-9">
+                                                    <span class="theme-text-secondary me-2">${i + 1}</span>
+                                                    <c:if test="${i == 0}">
+                                                        <a 
+                                                            class="video-play-trigger" 
+                                                            href="#" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#modal-video-${i}"
+                                                            style="color: #ff6600"
+                                                        >${videos.get(i).getTitle()}</a>
+                                                        <span class="badge bg-primary ms-2">Preview</span>
+                                                    </c:if>
+                                                    <c:if test="${i != 0}">
+                                                        <c:if test="${access}">
+                                                            <a
+                                                                class="video-play-trigger" 
+                                                                href="#" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#modal-video-${i}"
+                                                                style="color: #ff6600"
+                                                            >${videos.get(i).getTitle()}</a>
+                                                        </c:if>
+                                                        <c:if test="${!access}">
+                                                            <div
+                                                                style="color: #333; display: inline; cursor: default"
+                                                            >${videos.get(i).getTitle()}</div>
+                                                        </c:if>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                        </div><!--//module-sub-item-->
+                                    </c:forEach>
+                                </c:if>
                             </div><!--//card-body-->
                         </div><!--//module-content-->
                     </div><!--//module-item-->
@@ -205,47 +204,24 @@
     </div><!--//section-pricing-->
     
     
-    <!-- Video Modal -->
-    <div class="modal modal-video" id="modal-video-1" tabindex="-" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                <div class="modal-body">
-                    <div class="ratio ratio-16x9">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/qz0aGYrrlhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div><!--//modal-body-->
-            </div><!--//modal-content-->
-        </div><!--//modal-dialog-->
-    </div><!--//modal-->
-    
-    <div class="modal modal-video" id="modal-video-2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-                <div class="modal-body">
-                    <div class="ratio ratio-16x9">
-                        <iframe width="560" height="315" src="https://res.cloudinary.com/dzhndw8ro/video/upload/v1709279221/cgnoihxd3gorh3qdkmx2.mp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div><!--//modal-body-->
-            </div><!--//modal-content-->
-        </div><!--//modal-dialog-->
-    </div><!--//modal-->
-    
-    <!-- Video Modal -->
-	<div class="modal modal-video" id="modal-video" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-				<div class="modal-body">
-					<div class="ratio ratio-16x9">
-	                    <iframe width="560" height="315" src="https://www.youtube.com/embed/qz0aGYrrlhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-		            </div>
-				</div><!--//modal-body-->
-			</div><!--//modal-content-->
-		</div><!--//modal-dialog-->
-	</div><!--//modal-->
-<%@include file="include/footer.jsp" %>
+    <c:forEach var="i" begin="0" end="${videos.size() - 1}">
+        <div class="modal modal-video" id="modal-video-${i}" tabindex="-" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div class="modal-body">
+                        <div class="ratio ratio-16x9">
+                            <iframe 
+                                src="${videos.get(i).getUrl()}"
+                                width="560" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                            ></iframe>
+                        </div>
+                    </div><!--//modal-body-->
+                </div><!--//modal-content-->
+            </div><!--//modal-dialog-->
+        </div><!--//modal-->
+    </c:forEach>
+    <%@include file="include/footer.jsp" %>
     <script src="assets/plugins/popper.min.js"></script>      
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>  
     <script src="assets/js/main.js"></script>
