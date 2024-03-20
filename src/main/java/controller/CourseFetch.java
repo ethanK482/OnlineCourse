@@ -9,13 +9,11 @@ import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Course;
-import model.User;
 import service.CourseService;
 import service.UserService;
 import util.CookieProvide;
@@ -90,6 +88,8 @@ public class CourseFetch extends HttpServlet {
             request.setAttribute("cartSize", cartArr.length);
         }
         request.setAttribute("user", user);
+      
+        CookieProvide.setHeaderInfo(request);
         processRequest(request, response);
     }
 

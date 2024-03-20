@@ -42,10 +42,10 @@
                                     <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                                         <p><strong>${course.title}</strong></p>
                                         <p>${course.seller.firstName} ${course.seller.lastName}</p>
-                                        <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                        <a href="cart?action=remove&id=${course.id}" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
                                                 title="Remove item">
                                             <i class="fas fa-trash"></i>
-                                        </button>
+                                        </a>
                                     </div>
 
                                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">

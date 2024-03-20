@@ -82,14 +82,6 @@ public class CloudinaryTest extends HttpServlet {
 //        } catch (Exception e) { System.err.println(e); }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     
     private String uploadMedia(HttpServletRequest request) {
         try {

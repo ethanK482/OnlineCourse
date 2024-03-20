@@ -23,13 +23,6 @@ import util.CookieProvide;
 @WebServlet(name="CourseDetail", urlPatterns={"/course-detail"})
 public class CourseDetail extends HttpServlet {
    
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         RequestDispatcher dispatch = request.getRequestDispatcher("course-detail.jsp");

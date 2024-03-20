@@ -16,10 +16,6 @@ import service.CourseService;
 import service.UserService;
 import util.CookieProvide;
 
-/**
- *
- * @author HuyHK
- */
 @WebServlet(name = "Cart", urlPatterns = {"/cart"})
 public class Cart extends HttpServlet {
 
@@ -33,23 +29,34 @@ public class Cart extends HttpServlet {
             case "view-cart":
                 viewCart(request, response);
                 break;
+             case "remove":
+                removeFromCart(request, response);
+                break;
             default:
                 throw new AssertionError();
         }
     }
 
+    private void removeFromCart(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String id = request.getParameter("id");
+        String newCart = CookieProvide.removeAndGetNewCart(CookieProvide.getCarts(request.getCookies()), id);
+        Cookie c = new Cookie("cart", newCart);
+            c.setMaxAge(30 * 24 * 60 * 60);
+            response.addCookie(c);
+            response.sendRedirect("cart?action=view-cart");
+    }
     private void addToCart(HttpServletRequest request, HttpServletResponse response) {
         try {
             String id = request.getParameter("id");
             Cookie[] cookies = request.getCookies();
             StringBuilder cartContentBuilder = CookieProvide.getCarts(cookies);
             if (cartContentBuilder.length() > 0) {
-                cartContentBuilder.append("-").append(id);
-            } else {
                 if (!cartContentBuilder.toString().contains(id)) {
-                         cartContentBuilder.append(id);
-                  
+                    cartContentBuilder.append("-").append(id);
                 }
+
+            } else {
+                cartContentBuilder.append(id);
             }
             String cartContent = cartContentBuilder.toString();
             Cookie c = new Cookie("cart", cartContent);
@@ -64,29 +71,26 @@ public class Cart extends HttpServlet {
     private void viewCart(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String cartString = CookieProvide.getCarts(cookies).toString();
-        if(!cartString.equals("")){
+        if (!cartString.equals("")) {
             ArrayList cartItems = new ArrayList();
-        String[] cartArr = cartString.split("-");
-        double totalPrice = 0;
-        for (String courseId : cartArr) {
-            Course course  =   CourseService.fetchCourseById(Integer.parseInt(courseId));
-            User seller = UserService.getUserById(course.getSeller().getuId());
-            course.getSeller().setFirstName(seller.getFirstName());
-            course.getSeller().setLastName(seller.getLastName());
-            cartItems.add(course);
-            totalPrice+=course.getPrice();
+            String[] cartArr = cartString.split("-");
+            double totalPrice = 0;
+            for (String courseId : cartArr) {
+                Course course = CourseService.fetchCourseById(Integer.parseInt(courseId));
+                User seller = UserService.getUserById(course.getSeller().getuId());
+                course.getSeller().setFirstName(seller.getFirstName());
+                course.getSeller().setLastName(seller.getLastName());
+                cartItems.add(course);
+                totalPrice += course.getPrice();
+            }
+            request.setAttribute("courses", cartItems);
+            request.setAttribute("quanlity", cartItems.size());
+            request.setAttribute("totalPrice", totalPrice);
         }
-        request.setAttribute("courses", cartItems);
-        request.setAttribute("quanlity", cartItems.size());
-        request.setAttribute("totalPrice", totalPrice);
-        }
-        
-         
+
         try {
             request.getRequestDispatcher("cart.jsp").forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

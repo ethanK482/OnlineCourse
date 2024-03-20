@@ -139,7 +139,7 @@
                                 </div>
                                 <a href="contact.html" class="nav-item nav-link">Contact</a>
                             </div>
-                            <div class="d-flex "> 
+                            <div class="d-flex align-items-center "> 
                                 <c:if test="${user==null}">
                                     <a class="btn btn-primary py-2 px-4  d-none d-lg-block" href="login.jsp">Login</a>
                                     <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="register.jsp">Register</a>
@@ -148,13 +148,14 @@
                                     <span class="btn btn-primary py-2 px-4  d-none d-lg-block">${user.firstName} ${user.lastName}</span>
                                     
                                 </c:if>
-                                     <c:if test="${user!=null}">
-                                         <a href="auth?action=logout">Logout </a>
+                                   
+
+
+                                <a class="btn  btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart?action=view-cart">Cart (${cartSize})</a>
+                                  <c:if test="${user!=null}">
+                                         <a class="ml-3 btn btn-primary py-2 px-4 " href="auth?action=logout">Logout </a>
                                     
                                 </c:if>
-
-
-                                <a class="btn btn-primary py-2 px-4 ml-2  d-none d-lg-block" href="cart?action=view-cart">Cart (${cartSize})</a>
                             </div>
 
                         </div>
