@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import model.Account;
 import model.User;
 import util.ConnectDB;
+import util.HashPassword;
 
 public class UserService {
 
@@ -165,6 +166,22 @@ public class UserService {
         }
         return null;
 
+    }
+    
+    public static boolean changePassword(String email, String newPassword){
+         String changePasswordQuery = "UPDATE account SET password = ? WHERE email = ?";
+        try {
+            c = ConnectDB.getConnection();
+            pre = c.prepareStatement(changePasswordQuery);
+            pre.setString(1, HashPassword.getSecurePassword(newPassword));
+            pre.setString(2, email);
+            int rowChange = pre.executeUpdate();
+            c.close();
+            return rowChange > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static void main(String[] args) {

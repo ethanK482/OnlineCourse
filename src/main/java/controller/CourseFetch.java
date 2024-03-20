@@ -9,12 +9,10 @@ import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Course;
-import model.User;
 import service.CourseService;
 import util.CookieProvide;
 
@@ -32,15 +30,7 @@ public class CourseFetch extends HttpServlet {
             throws ServletException, IOException {
         ArrayList<Course> courses = CourseService.fetchCourses();
         request.setAttribute("courses", courses);
-        Cookie[] cookies = request.getCookies();
-        StringBuilder cartString = CookieProvide.getCarts(cookies);
-        request.setAttribute("cartSize", 0);
-        if (!cartString.isEmpty()) {
-            String[] cartArr = cartString.toString().split("-");
-            request.setAttribute("cartSize", cartArr.length);
-        }
-        User user = CookieProvide.getUserInfo(request);
-        request.setAttribute("user", user);
+        CookieProvide.setHeaderInfo(request);
         processRequest(request, response);
     }
 

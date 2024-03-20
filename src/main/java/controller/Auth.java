@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.Account;
 import model.User;
 import service.UserService;
+import util.EncodeProvider;
 import util.HashPassword;
 import util.JWTProvider;
 import util.SendMail;
@@ -33,11 +36,23 @@ public class Auth extends HttpServlet {
                 verifyHandle(request, response);
                 break;
             }
-            case "logout":{
+            case "logout": {
                 Cookie cookie = new Cookie("auth_token", "");
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
                 response.sendRedirect("course-fetch");
+                break;
+            }
+            case "forgot": {
+                forgotPassword(request, response);
+                break;
+            }
+            case "before-reset": {
+                beforeReset(request, response);
+                break;
+            }
+            case "reset": {
+                reset(request, response);
                 break;
             }
             default:
@@ -48,14 +63,14 @@ public class Auth extends HttpServlet {
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, IOException, ServletException {
         ArrayList userInfo = UserService.login(request.getParameter("email"), HashPassword.getSecurePassword(request.getParameter("password")));
-        if (userInfo.isEmpty()) {
+        if (userInfo == null) {
             response.sendError(401, "Wrong email or password");
         } else {
             Account account = (Account) userInfo.get(0);
             User user = (User) userInfo.get(1);
             if (account.isIsVerifyEmail()) {
                 Cookie cookie = new Cookie("auth_token", JWTProvider.generateToken(account.getId(), user.getRole()));
-                cookie.setMaxAge(60*60*24*30);
+                cookie.setMaxAge(60 * 60 * 24 * 30);
                 response.addCookie(cookie);
                 response.sendRedirect("course-fetch");
                 return;
@@ -117,6 +132,46 @@ public class Auth extends HttpServlet {
             }
         } else {
             response.sendError(400, "Secret number not match");
+        }
+    }
+
+    private void forgotPassword(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        boolean isSendEmail = SendMail.send("Your reset url is: " + "http://localhost:8080/OnlineCourse/auth?action=before-reset&email=" + EncodeProvider.endcode(email) + "-" + EncodeProvider.endcode("secret"), "Reset password", email);
+        if (isSendEmail) {
+            try {
+                response.getWriter().print("Reset url is sent to: " + email);
+            } catch (IOException ex) {
+                Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                response.sendError(500, "Can't send email");
+            } catch (IOException ex) {
+                Logger.getLogger(Auth.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private void beforeReset(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String email = request.getParameter("email");
+        request.setAttribute("email", email);
+        request.getRequestDispatcher("newpassword.jsp").forward(request, response);
+    }
+
+    private void reset(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String email = EncodeProvider.decode(request.getParameter("email"));
+        String password = request.getParameter("password");
+        String confirm_password = request.getParameter("confirm_password");
+        if (!password.equals(confirm_password)) {
+            response.sendError(400, "Password not match");
+        }
+        boolean isChange = UserService.changePassword(email, password);
+        if (isChange) {
+            request.setAttribute("notice", "Reset password email susscessfully. You can login!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        } else {
+            response.sendError(500, "can't change password. Please try again");
         }
     }
 
