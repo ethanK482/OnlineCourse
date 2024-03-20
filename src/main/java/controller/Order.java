@@ -6,7 +6,8 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Base64;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,30 +16,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import middleware.MiddleWare;
 import model.Course;
 import model.User;
 import service.CourseService;
 import service.OrderService;
 import util.CookieProvide;
+import util.EncodeProvider;
 
 @WebServlet(name = "Order", urlPatterns = {"/Order"})
 public class Order extends HttpServlet {
-    private String endcodeOrderId(int orderId) {
-        return Base64.getEncoder().encodeToString((orderId+"").getBytes());
-    }
-
-    private String decodeOrderId(String encodedString) {
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
-        return new String(decodedBytes);
-    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-       if(!MiddleWare.authMiddleWare(request, response)){
-          response.sendRedirect("login.jsp");
-          return;
-       }
+            throws ServletException, IOException, SQLException {
         switch (request.getParameter("action")) {
             case "pay":
                 Pay(request, response);
@@ -51,41 +40,53 @@ public class Order extends HttpServlet {
                 throw new AssertionError();
         }
     }
-    private void handleSuccess(HttpServletRequest request, HttpServletResponse response){
-     
-        int orderId = Integer.parseInt(decodeOrderId(request.getParameter("pay-code")));
+
+    private void handleSuccess(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        int orderId = Integer.parseInt(EncodeProvider.decode(request.getParameter("pay-code")));
+        int uid = CookieProvide.getUserInfo(request).getuId();
+        ArrayList<Integer> courseIds = OrderService.findOrderItemByOrder(orderId);
+        if (courseIds != null) {
+            System.out.println(courseIds);
+            for (int courseID : courseIds) {
+                OrderService.addUserCourse(uid, courseID);
+            }
+        }
         OrderService.updatePayStatus(orderId);
         Cookie cookie = new Cookie("cart", "");
-         cookie.setMaxAge(0);
+        cookie.setMaxAge(0);
         response.addCookie(cookie);
         try {
             response.sendRedirect("course-fetch");
         } catch (IOException ex) {
             Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
-    private void Pay(HttpServletRequest request, HttpServletResponse response) {
-           User user  =  CookieProvide.getUserInfo(request);
-             double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
-            model.Order order = OrderService.createOrder(totalPrice, user.getuId());
-            
-             Cookie[] cookies = request.getCookies();
+
+    private void Pay(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        User user = CookieProvide.getUserInfo(request);
+        double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
+        model.Order order = OrderService.createOrder(totalPrice, user.getuId());
+        Cookie[] cookies = request.getCookies();
         String cartString = CookieProvide.getCarts(cookies).toString();
         String[] cartArr = cartString.split("-");
         for (String courseId : cartArr) {
-            Course course  =   CourseService.fetchCourseById(Integer.parseInt(courseId));
-            OrderService.createOrderItem(course.getId(),order.getId() );
+            ArrayList<Integer> courseIds = OrderService.findUserCourse(user.getuId());
+            if (courseIds.contains(Integer.valueOf(courseId))) {
+                response.sendError(400, "You can't buy a course 2 time");
+                return;
+            }
+            Course course = CourseService.fetchCourseById(Integer.parseInt(courseId));
+            OrderService.createOrderItem(course.getId(), order.getId());
         }
         try {
             Stripe.apiKey = "sk_test_51NhOiqFwiLeydcwjFiac5xebXeAJlL1ygtESPrNpTKU6TuyCHpdl34n4iOp3u99Guofm9JB2EEaZHL9qeVQ2UXaf00aB8IWj6f";
-          
+
             SessionCreateParams params
                     = SessionCreateParams.builder()
                             .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                             .setMode(SessionCreateParams.Mode.PAYMENT)
-                            .setSuccessUrl("http://localhost:8080/OnlineCourse/Order?action=success&pay-code="+ endcodeOrderId(order.getId()))
+                            .setSuccessUrl("http://localhost:8080/OnlineCourse/Order?action=success&pay-code=" + EncodeProvider.endcode(order.getId() + "") + "-" + EncodeProvider.endcode("secret"))
                             .setCancelUrl("http://yourdomain.com/cancel.jsp")
                             .addLineItem(
                                     SessionCreateParams.LineItem.builder()
@@ -107,9 +108,7 @@ public class Order extends HttpServlet {
 
             Session session = Session.create(params);
             response.sendRedirect(session.getUrl());
-        } catch (StripeException ex) {
-            Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (StripeException | IOException ex) {
             Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -126,7 +125,11 @@ public class Order extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -140,7 +143,11 @@ public class Order extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Order.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

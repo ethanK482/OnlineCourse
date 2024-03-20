@@ -150,7 +150,7 @@
                                                     <td align="center" style="border-radius: 3px;" bgcolor="#AC46F4">
                                                         <p>Secret number is sent to ${email}</p>
                                                         <form action="auth?action=verify" method="post">
-                                                            <input type="submit" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;" value="Confirm Account"/>
+                                                            <input type="submit" target="_blank" style="background-color: #AC46F4; font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;" value="Confirm Account"/>
                                                             <input type="text" name="verifyToken"/>
                                                             <input type="hidden" name="secret" value="${verifyToken}"/>
                                                             <input type="hidden" name="email" value="${email}"/>
